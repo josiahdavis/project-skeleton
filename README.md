@@ -1,8 +1,16 @@
 # Project Skeleton
-Simple project structure for ML projects in PyTorch on AWS.
+Minimalistic project structure for ML projects in PyTorch on AWS.
+
+## Usage
+
+```
+git clone https://github.com/josiahdavis/project-skeleton.git
+cd project-skeleton
+pip install -e .
+```
 
 ## Features
-- [ ] cookiecutter-like directory structure
-- [ ] pip install-able
+- [x] cookiecutter-like directory structure
+- [x] pip install-able
 - [ ] pytest
 - [ ] sphinx

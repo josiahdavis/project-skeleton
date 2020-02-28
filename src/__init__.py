@@ -1,2 +1,2 @@
-from . import .data
-from , import .models
+from .data import *
+from .models import *
