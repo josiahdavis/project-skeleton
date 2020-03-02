@@ -18,7 +18,7 @@ def make_dir_if_needed(local_dir):
 
 
 def download_objects(s3_client, bucket, s3_keys, local_dir, verbose=False):
-    """Downloads objects from s3 to a local directory.
+    """Downloads multiple objects from s3 to a local directory.
 
     Args:
         s3_client (obj): a low-level client of AWS S3.
