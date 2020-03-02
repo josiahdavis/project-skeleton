@@ -12,5 +12,10 @@ pip install -e .
 ## Features
 - [x] cookiecutter-like directory structure
 - [x] pip install-able
+- [ ] s3 utilities
 - [ ] pytest
 - [ ] sphinx
+
+## References
+
+- [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
