@@ -12,7 +12,7 @@ cd project-skeleton
 conda create -n py37 python=3.7
 
 # Activate environment
-source activate py36
+source activate py37
 
 # Install the relevant packages
 pip install -r requirements.txt
@@ -20,11 +20,17 @@ pip install -r requirements.txt
 # Install
 pip install -e .
 
+# ....
+# Make some changes
+# ....
 
 # Run tox
 tox -e pydocstyle
 tox -e flake8
 tox -e docs
+
+# Deactivate environment
+source deactivate
 ```
 
 ## References
