@@ -1,25 +1,29 @@
+from botocore.exceptions import ClientError
+import logging
 import boto3
 import os
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s %(levelname)s] %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+)
 
 
 def make_dir_if_needed(local_dir):
     """Creates a directory if doesn't already exist.
-
     Args:
         local_dir (str): a directory.
-
     Returns:
         Nothing except a imple print confirmation
-
     """
     if not os.path.isdir(local_dir):
         os.mkdir(local_dir)
-        print(f"Created {local_dir}")
+        logging.info(f"Created {local_dir}")
 
 
 def download_objects(s3_client, bucket, s3_keys, local_dir, verbose=False):
     """Downloads multiple objects from s3 to a local directory.
-
     Args:
         s3_client (obj): a low-level client of AWS S3.
         bucket (str): the bucket name.
@@ -42,7 +46,31 @@ def download_objects(s3_client, bucket, s3_keys, local_dir, verbose=False):
 
 def download_object(s3_client, bucket, s3_key, local_key=None, verbose=False):
     """Downloads a single object from s3 to a local directory.
+    Args:
+        s3_client (obj): a low-level client of AWS S3.
+        bucket (str): the bucket name.
+        s3_key (str): the path to the s3 object along with the object name.
+        local_key (str): where the files should be downloaded to and file name.
+        verbose (bool): whether to print out a file as it is being downloaded.
+    Returns:
+        True if file was downloaded, else False.
+   """
 
+    if local_key is None:
+        file_name = s3_key.split("/")[-1]
+        local_key = os.path.join(".", file_name)
+    try:
+        s3_client.download_file(bucket, s3_key, local_key)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    if verbose:
+        logging.info(f"Downloaded s3://{bucket}/{s3_key} --> {local_key}")
+    return True
+
+
+def upload_object(s3_client, bucket, local_key, s3_key=None, verbose=False):
+    """Uploads a single object from local directory to s3.
     Args:
         s3_client (obj): a low-level client of AWS S3.
         bucket (str): the bucket name.
@@ -50,30 +78,33 @@ def download_object(s3_client, bucket, s3_key, local_key=None, verbose=False):
         local_key (str): where the files should be downloaded to and file name.
         verbose (bool): whether to print out a file as it is being downloaded. 
     
+    Returns:
+        True if file was uploaded, else False.
    """
 
-    if not local_key:
-        file_name = s3_key.split("/")[-1]
-        local_key = os.path.join(".", file_name)
-    s3_client.download_file(bucket, s3_key, local_key)
+    if s3_key is None:
+        s3_key = local_key
+    try:
+        response = s3_client.upload_file(local_key, bucket, s3_key)
+    except ClientError as e:
+        logging.error(e)
+        return False
     if verbose:
-        print(f"downloaded {s3_key} --> {local_key}")
+        logging.info(f"Uploaded {local_key} --> s3://{bucket}/{s3_key}")
+    return True
 
 
 def list_objects(s3_client, bucket, prefix="", extensions=None, max_items=2147483647):
     """Lists out objects within s3.
-
     Args:
         s3_client: a low-level client of AWS S3.
         bucket (str): the bucket name
         prefix: (str, optional): bucket prefix
         extensions (str, list, optional): file extensions to filter results by
         max_items (int, optional): only return a subset of items
-
     Returns:
         keys (list of strings): files within the bucket matching all of the 
             conditions. Files will include prefix.
-
     Examples:
         >>> s3_client = boto3.client('s3')
         >>> bucket = 'nose-recognition'
@@ -86,7 +117,7 @@ def list_objects(s3_client, bucket, prefix="", extensions=None, max_items=214748
     )
     results = page_iterator.search("Contents")
     keys = [el["Key"] for el in results]
-    if extensions:
+    if extensions is not None:
         return [k for k in keys if k.split(".")[-1] in set(extensions)]
     else:
         return keys

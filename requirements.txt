@@ -1,2 +1,10 @@
-torch
-torchtext
+numpy
+pandas
+matplotlib
+scikit-learn
+jupyter
+boto3
+sphinx
+black
+flake8
+pydocstyle
