@@ -3,6 +3,7 @@ pandas
 matplotlib
 scikit-learn
 jupyter
+botocore
 boto3
 tox
 sphinx

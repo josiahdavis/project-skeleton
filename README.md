@@ -9,7 +9,7 @@ git clone https://github.com/josiahdavis/project-skeleton.git
 cd project-skeleton
 
 # Set up local python environment
-conda create -n py36 python=3.6
+conda create -n py37 python=3.7
 
 # Activate environment
 source activate py36
