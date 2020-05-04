@@ -1,20 +1,31 @@
 # Project Skeleton
-Minimalistic project structure for ML projects in PyTorch on AWS.
+Minimalistic project structure.
 
 ## Usage
 
 ```
+# Clone
 git clone https://github.com/josiahdavis/project-skeleton.git
 cd project-skeleton
-pip install -e .
-```
 
-## Features
-- [x] cookiecutter-like directory structure
-- [x] pip install-able
-- [ ] s3 utilities
-- [ ] pytest
-- [ ] sphinx
+# Set up local python environment
+conda create -n py36 python=3.6
+
+# Activate environment
+source activate py36
+
+# Install the relevant packages
+pip install -r requirements.txt
+
+# Install
+pip install -e .
+
+
+# Run tox
+tox -e pydocstyle
+tox -e flake8
+tox -e docs
+```
 
 ## References
 

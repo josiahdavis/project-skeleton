@@ -4,6 +4,7 @@ matplotlib
 scikit-learn
 jupyter
 boto3
+tox
 sphinx
 black
 flake8
