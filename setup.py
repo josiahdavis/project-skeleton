@@ -4,7 +4,7 @@ setup(
     name="src",
     packages=find_packages(),
     version="0.1.0",
-    description="Template project for Josiah",
+    description="Template project",
     author="Josiah Davis",
     license="Apache 2.0",
 )
